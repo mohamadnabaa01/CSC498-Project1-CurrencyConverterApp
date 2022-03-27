@@ -21,7 +21,9 @@ $mysql2->execute();
 
 $rate = $mysql2->get_result();
 $row = $rate->fetch_assoc();
-echo $row["rate"];
+$response = $row;
+$json_response = json_encode($response);
+echo $json_response;
 
 curl_close($scrape);
 
