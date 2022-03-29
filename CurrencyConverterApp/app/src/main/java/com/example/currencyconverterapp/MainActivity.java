@@ -35,8 +35,8 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(s);
             try{
                 JSONObject json = new JSONObject(s);
-                String created_at = json.getString("rate");
-                Log.i("rate", created_at);
+                String rate = json.getString("rate");
+                Log.i("Rate", rate);
             }catch(Exception e){
                 e.printStackTrace();
             }
