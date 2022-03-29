@@ -10,5 +10,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        String amount="";
+        String url="http://localhost:8080/CurrencyConverter/scrape.php";
+
+        DownloadTask task=new DownloadTask();
+        task.execute(url);
     }
+
 }
