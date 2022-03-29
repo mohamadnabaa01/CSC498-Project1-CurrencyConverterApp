@@ -1,13 +1,19 @@
 package com.example.currencyconverterapp;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
+
 import org.json.JSONObject;
+
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
 public class MainActivity extends AppCompatActivity {
     public class DownloadTask extends AsyncTask<String, Void, String> {
         protected String doInBackground(String... urls){
@@ -32,24 +38,27 @@ public class MainActivity extends AppCompatActivity {
             return result;
         }
         protected void onPostExecute(String s){
+//            Toast.makeText(getApplicationContext(), "hello", Toast.LENGTH_SHORT).show();
             super.onPostExecute(s);
             try{
                 JSONObject json = new JSONObject(s);
                 String rate = json.getString("rate");
                 Log.i("Rate", rate);
+
+
             }catch(Exception e){
                 e.printStackTrace();
             }
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        String amount =  "";
+        String amount =  ""; //get the amount from the view
         String url = "http://localhost:8080/CurrencyConverter/scrape.php";
         DownloadTask task = new DownloadTask();
         task.execute(url);
-
     }
 }
