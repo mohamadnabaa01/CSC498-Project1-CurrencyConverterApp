@@ -34,13 +34,20 @@ public class Calculator extends AppCompatActivity{
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, the_currency_list);
         currency_list.setAdapter(adapter);
 
+    }
+
+    public void convert_amount(View view){
         currency_list.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(i == 0)
-                    currency_convert ="USD";
-                else
-                    currency_convert="L.L.";
+                switch(i) {
+                    case 0:
+                        currency_convert = "L.L.";
+                        break;
+                    case 1:
+                        currency_convert = "USD";
+                        break;
+                }
             }
 
             @Override
@@ -48,16 +55,12 @@ public class Calculator extends AppCompatActivity{
                 Toast.makeText(getApplicationContext(), "رجاء اختار عملة معينة", Toast.LENGTH_LONG).show();
             }
         });
-
-    }
-
-    public void convert_amount(View view){
         EditText amount_convert= (EditText) findViewById(R.id.amount_to_convert);
         String amount_to_convert = amount_convert.getText().toString();
         TextView other_currency_statement = (TextView) findViewById(R.id.other_currency_stmt);
-        if(currency_convert == "USD")
+        if(currency_convert.equalsIgnoreCase("USD"))
             other_currency_statement.setText("المبلغ بالليرة اللبنانية هو:");
-        else
+        if(currency_convert.equalsIgnoreCase("L.L."))
             other_currency_statement.setText("المبلغ بالدولار هو:");
     }
     public void Reset(View view){
