@@ -81,4 +81,17 @@
         app:layout_constraintTop_toBottomOf="@+id/textView7"
         app:layout_constraintVertical_bias="0.110000014" />
 
+    <Button
+        android:id="@+id/start"
+        android:layout_width="130dp"
+        android:layout_height="71dp"
+        android:onClick="start_exchange"
+        android:text="اضغط للتحويل"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/lira_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/current_rate" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
