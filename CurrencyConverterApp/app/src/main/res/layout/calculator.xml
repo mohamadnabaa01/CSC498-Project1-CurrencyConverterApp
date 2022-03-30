@@ -81,13 +81,14 @@
         app:layout_constraintVertical_bias="0.050000012" />
 
     <ListView
-        android:layout_width="244dp"
-        android:layout_height="6dp"
+        android:id="@+id/currency_list"
+        android:layout_width="194dp"
+        android:layout_height="53dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/textView8"
-        app:layout_constraintHorizontal_bias="0.278"
+        app:layout_constraintHorizontal_bias="0.218"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.499" />
+        app:layout_constraintVertical_bias="0.483" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
