@@ -10,7 +10,8 @@
         android:id="@+id/lira_background"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:alpha="0.4"
+        android:alpha="0.55"
+        android:background="@drawable/lira"
         android:scaleType="fitXY"
         app:layout_constrainedHeight="false"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -22,7 +23,6 @@
         android:id="@+id/textView"
         android:layout_width="222dp"
         android:layout_height="61dp"
-        android:layout_marginBottom="500dp"
         android:text="تعا و سِمّ بدنك"
         android:textAlignment="center"
         android:textAllCaps="true"
@@ -30,12 +30,12 @@
         android:textIsSelectable="false"
         android:textSize="35sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
 
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.29000002" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/lira_background"
+        app:layout_constraintStart_toStartOf="@+id/lira_background"
+        app:layout_constraintTop_toTopOf="@+id/lira_background"
+        app:layout_constraintVertical_bias="0.120000005" />
 
     <TextView
         android:id="@+id/textView6"
@@ -63,21 +63,22 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/lira_background"
-        app:layout_constraintVertical_bias="0.13999999" />
+        app:layout_constraintTop_toBottomOf="@+id/textView6"
+        app:layout_constraintVertical_bias="0.18" />
 
     <TextView
         android:id="@+id/current_rate"
         android:layout_width="248dp"
         android:layout_height="72dp"
+        android:textAlignment="center"
         android:textColor="#BF000000"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintHorizontal_bias="0.23"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/lira_background"
-        app:layout_constraintVertical_bias="0.505" />
+        app:layout_constraintTop_toBottomOf="@+id/textView7"
+        app:layout_constraintVertical_bias="0.110000014" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
