@@ -19,6 +19,7 @@ import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
     TextView current_rate;
+    String rate_dollar;
 
     public class DownloadTask extends AsyncTask<String, Void, String>{
 
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
             try{
                 JSONObject json = new JSONObject(s);
-                String rate_dollar = json.getString("rate");
+                rate_dollar = json.getString("rate");
                 Log.i("Rate of Dollar", rate_dollar);
                 current_rate.setText(rate_dollar+" L.L. / 1$");
             }catch(Exception e){
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void start_exchange(View view){
         Intent intent = new Intent(getApplicationContext(), Calculator.class);
+        intent.putExtra("dollar_rate", rate_dollar);
         startActivity(intent);
     }
 }
