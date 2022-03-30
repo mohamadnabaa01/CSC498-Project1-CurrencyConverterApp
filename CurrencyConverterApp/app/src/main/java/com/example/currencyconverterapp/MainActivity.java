@@ -3,6 +3,7 @@ package com.example.currencyconverterapp;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
+    TextView current_rate;
 
     public class DownloadTask extends AsyncTask<String, Void, String>{
 
@@ -63,5 +65,6 @@ public class MainActivity extends AppCompatActivity {
         String url = "http://10.21.154.94:8080/CurrencyConverter/scrape.php";
         DownloadTask task = new DownloadTask();
         task.execute(url);
+        current_rate=(TextView) findViewById(R.id.current_rate);
     }
 }
