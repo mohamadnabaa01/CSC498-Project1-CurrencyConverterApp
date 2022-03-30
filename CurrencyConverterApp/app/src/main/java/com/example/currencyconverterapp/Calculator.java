@@ -57,5 +57,16 @@ public class Calculator extends AppCompatActivity{
         TextView other_currency_statement = (TextView) findViewById(R.id.other_currency_stmt);
         if(currency_convert == "USD")
             other_currency_statement.setText("المبلغ بالليرة اللبنانية هو:");
+        else
+            other_currency_statement.setText("المبلغ بالدولار هو:");
+    }
+    public void Reset(View view){
+        EditText amount_convert= (EditText) findViewById(R.id.amount_to_convert);
+        amount_convert.setText("اي مبلغ متاح فقط");
+        TextView other_currency_statement = (TextView) findViewById(R.id.other_currency_stmt);
+        other_currency_statement.setText("");
+        TextView converted_amount = (TextView) findViewById(R.id.converted_amount);
+        converted_amount.setText("");
+        Toast.makeText(getApplicationContext(),"لقد تم تكرار الصفحة كاملة", Toast.LENGTH_LONG).show();
     }
 }
