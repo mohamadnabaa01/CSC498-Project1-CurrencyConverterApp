@@ -1,8 +1,10 @@
 package com.example.currencyconverterapp;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,5 +69,10 @@ public class MainActivity extends AppCompatActivity {
         DownloadTask task = new DownloadTask();
         task.execute(url);
         current_rate=(TextView) findViewById(R.id.current_rate);
+
+    }
+    public void start_exchange(View view){
+        Intent intent = new Intent(getApplicationContext(), Calculator.class);
+        startActivity(intent);
     }
 }

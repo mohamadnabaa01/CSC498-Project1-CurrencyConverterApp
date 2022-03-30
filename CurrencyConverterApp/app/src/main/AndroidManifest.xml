@@ -13,6 +13,9 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.CurrencyConverterApp">
         <activity
+            android:name=".Calculator"
+            android:exported="false"/>
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
