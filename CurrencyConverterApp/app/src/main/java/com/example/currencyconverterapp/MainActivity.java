@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject json = new JSONObject(s);
                 String rate_dollar = json.getString("rate");
                 Log.i("Rate of Dollar", rate_dollar);
+                current_rate.setText(rate_dollar);
             }catch(Exception e){
                 e.printStackTrace();
             }
