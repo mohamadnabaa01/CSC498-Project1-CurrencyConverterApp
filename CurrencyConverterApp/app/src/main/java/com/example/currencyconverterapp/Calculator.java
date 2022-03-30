@@ -1,9 +1,13 @@
 package com.example.currencyconverterapp;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,6 +19,7 @@ public class Calculator extends AppCompatActivity{
     ListView currency_list;
     ArrayList<String> the_currency_list;
     ArrayAdapter<String> adapter;
+    String currency_convert;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,5 +33,29 @@ public class Calculator extends AppCompatActivity{
         the_currency_list = new ArrayList<String>(Arrays.asList( "الليرة اللبنانية", "دولار امريكي"));
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, the_currency_list);
         currency_list.setAdapter(adapter);
+
+        currency_list.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(i == 0)
+                    currency_convert ="USD";
+                else
+                    currency_convert="L.L.";
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                Toast.makeText(getApplicationContext(), "رجاء اختار عملة معينة", Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
+    public void convert_amount(View view){
+        EditText amount_convert= (EditText) findViewById(R.id.amount_to_convert);
+        String amount_to_convert = amount_convert.getText().toString();
+        TextView other_currency_statement = (TextView) findViewById(R.id.other_currency_stmt);
+        if(currency_convert == "USD")
+            other_currency_statement.setText("المبلغ بالليرة اللبنانية هو:");
     }
 }

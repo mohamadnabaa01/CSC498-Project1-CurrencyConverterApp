@@ -85,7 +85,7 @@
         app:layout_constraintVertical_bias="0.547" />
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/other_currency_stmt"
         android:layout_width="319dp"
         android:layout_height="36dp"
         android:textAlignment="textStart"
@@ -159,6 +159,7 @@
         android:id="@+id/conversion_button"
         android:layout_width="200dp"
         android:layout_height="55dp"
+        android:onClick="convert_amount"
         android:text="تحويل المبلغ"
         android:textAlignment="center"
         android:textSize="25sp"
@@ -170,7 +171,7 @@
         app:layout_constraintVertical_bias="0.669" />
 
     <Button
-        android:id="@+id/button7"
+        android:id="@+id/reset_button"
         android:layout_width="115dp"
         android:layout_height="47dp"
         android:text="تكرار"
