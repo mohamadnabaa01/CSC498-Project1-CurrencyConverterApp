@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         String amount =  ""; //get the amount from the view
-        String url = "http://10.21.154.94:8080/CurrencyConverter/scrape.php";
+        String url = "http://10.21.131.38/CurrencyConverter/scrape.php";
         DownloadTask task = new DownloadTask();
         task.execute(url);
         current_rate=(TextView) findViewById(R.id.current_rate);
