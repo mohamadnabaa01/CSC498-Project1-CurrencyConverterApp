@@ -146,6 +146,7 @@
         android:layout_height="61dp"
         android:ems="10"
         android:inputType="textPersonName"
+        android:onClick="put_amount"
         android:text="اي مبلغ متاح فقط"
         android:textAlignment="center"
         android:textSize="25sp"
@@ -173,7 +174,7 @@
     <Button
         android:id="@+id/reset_button"
         android:layout_width="115dp"
-        android:layout_height="47dp"
+        android:layout_height="48dp"
         android:onClick="Reset"
         android:text="تكرار"
         android:textAlignment="center"

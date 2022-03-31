@@ -37,24 +37,24 @@ public class Calculator extends AppCompatActivity{
     }
 
     public void convert_amount(View view){
-        currency_list.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                switch(i) {
-                    case 0:
-                        currency_convert = "L.L.";
-                        break;
-                    case 1:
-                        currency_convert = "USD";
-                        break;
-                }
-            }
+//        currency_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                switch(i) {
+//                    case 0:
+//                        currency_convert = "L.L.";
+//                        break;
+//                    case 1:
+//                        currency_convert = "USD";
+//                        break;
+//                }
+//            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                Toast.makeText(getApplicationContext(), "رجاء اختار عملة معينة", Toast.LENGTH_LONG).show();
-            }
-        });
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//                Toast.makeText(getApplicationContext(), "رجاء اختار عملة معينة", Toast.LENGTH_LONG).show();
+//            }
+//        });
         EditText amount_convert= (EditText) findViewById(R.id.amount_to_convert);
         String amount_to_convert = amount_convert.getText().toString();
         TextView other_currency_statement = (TextView) findViewById(R.id.other_currency_stmt);
@@ -72,4 +72,9 @@ public class Calculator extends AppCompatActivity{
         converted_amount.setText("");
         Toast.makeText(getApplicationContext(),"لقد تم تكرار الصفحة كاملة", Toast.LENGTH_LONG).show();
     }
+    public void put_amount(View v){
+        EditText amount=(EditText) v;
+        amount.setText("");
+    }
+    
 }
