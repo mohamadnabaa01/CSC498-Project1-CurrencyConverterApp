@@ -93,16 +93,10 @@ public class Calculator extends AppCompatActivity {
     private void postRequest(){
         RequestQueue requestQueue = Volley.newRequestQueue(Calculator.this);
         String url = "http://192.168.1.103/CurrencyConverter/scrape.php";
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
+        StringRequest request = new StringRequest(Request.Method.POST, url, response -> {
+            Toast.makeText(getApplicationContext(), "Post API Success!", Toast.LENGTH_LONG).show();
+        }, error -> {
+            Toast.makeText(getApplicationContext(), "Post API Failed!", Toast.LENGTH_LONG).show();
         }){
             @Override
             protected Map<String, String> getParams(){
@@ -113,29 +107,5 @@ public class Calculator extends AppCompatActivity {
             }
         };
         requestQueue.add(request);
-    }
-
-    private void sendGetRequest() {
-        // url to post our data
-        String url = "http://192.168.1.103/CurrencyConverter/scrape.php";
-
-        // creating a new variable for our request queue
-        RequestQueue queue = Volley.newRequestQueue(Calculator.this);
-
-        // on below line we are calling a string
-        // request method to post the data to our API
-        // in this we are calling a post method.
-        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-
-            }
-        }, new Response.ErrorListener() {
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Error in posting to API", Toast.LENGTH_LONG).show();
-            }
-        });
-        queue.add(request);
-
     }
 }
