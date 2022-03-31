@@ -1,8 +1,6 @@
 package com.example.currencyconverterapp;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,8 +11,18 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Calculator extends AppCompatActivity{
 
@@ -22,12 +30,14 @@ public class Calculator extends AppCompatActivity{
     ArrayList<String> the_currency_list;
     ArrayAdapter<String> adapter;
     String currency_convert;
+    String dollar_current_rate;
+    String amount_to_convert;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calculator);
         Intent y = getIntent();
-        int dollar_current_rate = Integer.parseInt(y.getStringExtra("dollar_rate"));
+        dollar_current_rate = y.getStringExtra("dollar_rate");
         TextView dollar_text = (TextView) findViewById(R.id.current_rate_text);
         dollar_text.setText(dollar_current_rate + " L.L.");
 
@@ -36,9 +46,7 @@ public class Calculator extends AppCompatActivity{
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, the_currency_list);
         currency_list.setAdapter(adapter);
 
-
-
-                currency_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        currency_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 switch(i) {
@@ -51,27 +59,16 @@ public class Calculator extends AppCompatActivity{
                 }
             }
         });
-                //from as to php
-
-
     }
 
     public void convert_amount(View view){
         EditText amount_convert= (EditText) findViewById(R.id.amount_to_convert);
-        String amount =amount_convert.getText().toString();
+        amount_to_convert =amount_convert.getText().toString();
         TextView other_currency_statement = (TextView) findViewById(R.id.other_currency_stmt);
         if(currency_convert.equalsIgnoreCase("USD"))
             other_currency_statement.setText("المبلغ بالليرة اللبنانية هو:");
         if(currency_convert.equalsIgnoreCase("L.L."))
             other_currency_statement.setText("المبلغ بالدولار هو:");
-
-        ////////////////////////////////
-        SQLiteDatabase sql=this.openOrCreateDatabase("currency_converter_db",MODE_PRIVATE,null);
-        Log.i("SQL", sql.toString());
-        sql.execSQL("CREATE TABLE IF NOT EXISTS convert_currencies(int amount, rate)");
-        sql.execSQL("INSERT INTO convert_currencies(amount,rate) VALUES ('1','2')");
-        ////////////////////////////////
-        Toast.makeText(getApplicationContext(), "hello", Toast.LENGTH_SHORT).show();
     }
     public void Reset(View view){
         EditText amount_convert= (EditText) findViewById(R.id.amount_to_convert);
@@ -93,7 +90,7 @@ public class Calculator extends AppCompatActivity{
         String url = "http://192.168.1.103/CurrencyConverter/scrape.php";
 
         // creating a new variable for our request queue
-        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
 
         // on below line we are calling a string
         // request method to post the data to our API
@@ -101,28 +98,19 @@ public class Calculator extends AppCompatActivity{
         StringRequest request = new StringRequest(Request.Method.POST, url, new com.android.volley.Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                // inside on response method we are
-                // hiding our progress bar
-                // and setting data to edit text as empty
-                loadingPB.setVisibility(View.GONE);
-                nameEdt.setText("");
-                jobEdt.setText("");
-
                 // on below line we are displaying a success toast message.
-                Toast.makeText(MainActivity.this, "Data added to API", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Data added to API", Toast.LENGTH_SHORT).show();
                 try {
                     // on below line we are passing our response
                     // to json object to extract data from it.
-                    JSONObject respObj = new JSONObject(response);
+                    JSONObject json = new JSONObject(response);
 
                     // below are the strings which we
                     // extract from our json object.
-                    String name = respObj.getString("name");
-                    String job = respObj.getString("job");
+                    String rate = json.getString("dollar rate");
+                    String amount_convert = json.getString("convert amount");
 
-                    // on below line we are setting this string s to our text view.
-                    responseTV.setText("Name : " + name + "\n" + "Job : " + job);
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -130,9 +118,10 @@ public class Calculator extends AppCompatActivity{
             @Override
             public void onErrorResponse(VolleyError error) {
                 // method to handle errors.
-                Toast.makeText(MainActivity.this, "Fail to get response = " + error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Fail to get response = " + error, Toast.LENGTH_SHORT).show();
             }
-        }) {
+        })
+        {
             @Override
             protected Map<String, String> getParams() {
                 // below line we are creating a map for
@@ -141,8 +130,8 @@ public class Calculator extends AppCompatActivity{
 
                 // on below line we are passing our key
                 // and value pair to our parameters.
-                params.put("name", name);
-                params.put("job", job);
+                params.put("dollar rate", dollar_current_rate);
+                params.put("convert amount", amount_to_convert);
 
                 // at last we are
                 // returning our params.
@@ -153,7 +142,4 @@ public class Calculator extends AppCompatActivity{
         // a json object request.
         queue.add(request);
     }
-}
-
-
 }
