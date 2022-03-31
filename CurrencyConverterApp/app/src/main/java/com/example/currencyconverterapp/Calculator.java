@@ -57,7 +57,8 @@ public class Calculator extends AppCompatActivity{
 
     public void convert_amount(View view){
         EditText amount_convert= (EditText) findViewById(R.id.amount_to_convert);
-        int amount_to_convert = Integer.parseInt(amount_convert.getText().toString());
+        String amount =amount_convert.getText().toString();
+        Toast.makeText(getApplicationContext(), amount, Toast.LENGTH_SHORT).show();
         TextView other_currency_statement = (TextView) findViewById(R.id.other_currency_stmt);
         if(currency_convert.equalsIgnoreCase("USD"))
             other_currency_statement.setText("المبلغ بالليرة اللبنانية هو:");
@@ -66,8 +67,10 @@ public class Calculator extends AppCompatActivity{
 
         ////////////////////////////////
         SQLiteDatabase sql=this.openOrCreateDatabase("currency_converter_db",MODE_PRIVATE,null);
-        sql.execSQL("INSERT INTO convert_currenies(amount,rate) VALUES (amount_to_convert,dollar_current_rate)");
+        sql.execSQL("CREATE TABLE IF NOT EXISTS current_currencies(int amount, rate)");
+        sql.execSQL("INSERT INTO convert_currencies(amount,rate) VALUES ('1','2')");
         ////////////////////////////////
+        Toast.makeText(getApplicationContext(), "hello", Toast.LENGTH_SHORT).show();
     }
     public void Reset(View view){
         EditText amount_convert= (EditText) findViewById(R.id.amount_to_convert);
