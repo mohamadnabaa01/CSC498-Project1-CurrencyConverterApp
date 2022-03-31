@@ -1,5 +1,6 @@
 package com.example.currencyconverterapp;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,7 +26,7 @@ public class Calculator extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calculator);
         Intent y = getIntent();
-        String dollar_current_rate = y.getStringExtra("dollar_rate");
+        int dollar_current_rate = Integer.parseInt(y.getStringExtra("dollar_rate"));
         TextView dollar_text = (TextView) findViewById(R.id.current_rate_text);
         dollar_text.setText(dollar_current_rate + " L.L.");
 
@@ -33,6 +34,7 @@ public class Calculator extends AppCompatActivity{
         the_currency_list = new ArrayList<String>(Arrays.asList( "الليرة اللبنانية", "دولار امريكي"));
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, the_currency_list);
         currency_list.setAdapter(adapter);
+
 
 
                 currency_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -48,17 +50,24 @@ public class Calculator extends AppCompatActivity{
                 }
             }
         });
+                //from as to php
+
 
     }
 
     public void convert_amount(View view){
         EditText amount_convert= (EditText) findViewById(R.id.amount_to_convert);
-        String amount_to_convert = amount_convert.getText().toString();
+        int amount_to_convert = Integer.parseInt(amount_convert.getText().toString());
         TextView other_currency_statement = (TextView) findViewById(R.id.other_currency_stmt);
         if(currency_convert.equalsIgnoreCase("USD"))
             other_currency_statement.setText("المبلغ بالليرة اللبنانية هو:");
         if(currency_convert.equalsIgnoreCase("L.L."))
             other_currency_statement.setText("المبلغ بالدولار هو:");
+
+        ////////////////////////////////
+        SQLiteDatabase sql=this.openOrCreateDatabase("currency_converter_db",MODE_PRIVATE,null);
+        sql.execSQL("INSERT INTO convert_currenies(amount,rate) VALUES (amount_to_convert,dollar_current_rate)");
+        ////////////////////////////////
     }
     public void Reset(View view){
         EditText amount_convert= (EditText) findViewById(R.id.amount_to_convert);
@@ -73,5 +82,6 @@ public class Calculator extends AppCompatActivity{
         EditText amount=(EditText) v;
         amount.setText("");
     }
+
 
 }
