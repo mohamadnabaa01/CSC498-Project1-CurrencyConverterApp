@@ -11,8 +11,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -24,7 +26,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Calculator extends AppCompatActivity{
+public class Calculator extends AppCompatActivity {
 
     ListView currency_list;
     ArrayList<String> the_currency_list;
@@ -32,6 +34,7 @@ public class Calculator extends AppCompatActivity{
     String currency_convert;
     String dollar_current_rate;
     String amount_to_convert;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,14 +45,14 @@ public class Calculator extends AppCompatActivity{
         dollar_text.setText(dollar_current_rate + " L.L.");
 
         currency_list = (ListView) findViewById(R.id.currency_list);
-        the_currency_list = new ArrayList<String>(Arrays.asList( "الليرة اللبنانية", "دولار امريكي"));
+        the_currency_list = new ArrayList<String>(Arrays.asList("الليرة اللبنانية", "دولار امريكي"));
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, the_currency_list);
         currency_list.setAdapter(adapter);
 
         currency_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                switch(i) {
+                switch (i) {
                     case 0:
                         currency_convert = "L.L.";
                         break;
@@ -61,85 +64,78 @@ public class Calculator extends AppCompatActivity{
         });
     }
 
-    public void convert_amount(View view){
-        EditText amount_convert= (EditText) findViewById(R.id.amount_to_convert);
-        amount_to_convert =amount_convert.getText().toString();
+    public void convert_amount(View view) {
+        EditText amount_convert = (EditText) findViewById(R.id.amount_to_convert);
+        amount_to_convert = amount_convert.getText().toString();
         TextView other_currency_statement = (TextView) findViewById(R.id.other_currency_stmt);
-        if(currency_convert.equalsIgnoreCase("USD"))
+        if (currency_convert.equalsIgnoreCase("USD"))
             other_currency_statement.setText("المبلغ بالليرة اللبنانية هو:");
-        if(currency_convert.equalsIgnoreCase("L.L."))
+        if (currency_convert.equalsIgnoreCase("L.L."))
             other_currency_statement.setText("المبلغ بالدولار هو:");
+        postRequest();
     }
-    public void Reset(View view){
-        EditText amount_convert= (EditText) findViewById(R.id.amount_to_convert);
+
+    public void Reset(View view) {
+        EditText amount_convert = (EditText) findViewById(R.id.amount_to_convert);
         amount_convert.setText("اي مبلغ متاح فقط");
         TextView other_currency_statement = (TextView) findViewById(R.id.other_currency_stmt);
         other_currency_statement.setText("");
         TextView converted_amount = (TextView) findViewById(R.id.converted_amount);
         converted_amount.setText("");
-        Toast.makeText(getApplicationContext(),"لقد تم تكرار الصفحة كاملة", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "لقد تم تكرار الصفحة كاملة", Toast.LENGTH_LONG).show();
     }
-    public void put_amount(View v){
-        EditText amount=(EditText) v;
+
+    public void put_amount(View v) {
+        EditText amount = (EditText) v;
         amount.setText("");
     }
 
+    private void postRequest(){
+        RequestQueue requestQueue = Volley.newRequestQueue(Calculator.this);
+        String url = "http://192.168.1.103/CurrencyConverter/scrape.php";
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
 
-    private void postDataUsingVolley(String name, String job) {
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams(){
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("dollar rate", dollar_current_rate);
+                params.put("amount to convert", amount_to_convert);
+                return params;
+            }
+        };
+        requestQueue.add(request);
+    }
+
+    private void sendGetRequest() {
         // url to post our data
         String url = "http://192.168.1.103/CurrencyConverter/scrape.php";
 
         // creating a new variable for our request queue
-        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        RequestQueue queue = Volley.newRequestQueue(Calculator.this);
 
         // on below line we are calling a string
         // request method to post the data to our API
         // in this we are calling a post method.
-        StringRequest request = new StringRequest(Request.Method.POST, url, new com.android.volley.Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                // on below line we are displaying a success toast message.
-                Toast.makeText(getApplicationContext(), "Data added to API", Toast.LENGTH_SHORT).show();
-                try {
-                    // on below line we are passing our response
-                    // to json object to extract data from it.
-                    JSONObject json = new JSONObject(response);
 
-                    // below are the strings which we
-                    // extract from our json object.
-                    String rate = json.getString("dollar rate");
-                    String amount_convert = json.getString("convert amount");
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
             }
-        }, new com.android.volley.Response.ErrorListener() {
-            @Override
+        }, new Response.ErrorListener() {
             public void onErrorResponse(VolleyError error) {
-                // method to handle errors.
-                Toast.makeText(getApplicationContext(), "Fail to get response = " + error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Error in posting to API", Toast.LENGTH_LONG).show();
             }
-        })
-        {
-            @Override
-            protected Map<String, String> getParams() {
-                // below line we are creating a map for
-                // storing our values in key and value pair.
-                Map<String, String> params = new HashMap<String, String>();
-
-                // on below line we are passing our key
-                // and value pair to our parameters.
-                params.put("dollar rate", dollar_current_rate);
-                params.put("convert amount", amount_to_convert);
-
-                // at last we are
-                // returning our params.
-                return params;
-            }
-        };
-        // below line is to make
-        // a json object request.
+        });
         queue.add(request);
+
     }
 }
