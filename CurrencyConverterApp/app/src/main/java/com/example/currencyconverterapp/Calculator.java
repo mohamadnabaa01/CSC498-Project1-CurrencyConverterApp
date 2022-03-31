@@ -2,6 +2,7 @@ package com.example.currencyconverterapp;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -58,7 +59,6 @@ public class Calculator extends AppCompatActivity{
     public void convert_amount(View view){
         EditText amount_convert= (EditText) findViewById(R.id.amount_to_convert);
         String amount =amount_convert.getText().toString();
-        Toast.makeText(getApplicationContext(), amount, Toast.LENGTH_SHORT).show();
         TextView other_currency_statement = (TextView) findViewById(R.id.other_currency_stmt);
         if(currency_convert.equalsIgnoreCase("USD"))
             other_currency_statement.setText("المبلغ بالليرة اللبنانية هو:");
@@ -67,7 +67,8 @@ public class Calculator extends AppCompatActivity{
 
         ////////////////////////////////
         SQLiteDatabase sql=this.openOrCreateDatabase("currency_converter_db",MODE_PRIVATE,null);
-        sql.execSQL("CREATE TABLE IF NOT EXISTS current_currencies(int amount, rate)");
+        Log.i("SQL", sql.toString());
+        sql.execSQL("CREATE TABLE IF NOT EXISTS convert_currencies(int amount, rate)");
         sql.execSQL("INSERT INTO convert_currencies(amount,rate) VALUES ('1','2')");
         ////////////////////////////////
         Toast.makeText(getApplicationContext(), "hello", Toast.LENGTH_SHORT).show();
@@ -85,6 +86,74 @@ public class Calculator extends AppCompatActivity{
         EditText amount=(EditText) v;
         amount.setText("");
     }
+
+
+    private void postDataUsingVolley(String name, String job) {
+        // url to post our data
+        String url = "http://192.168.1.103/CurrencyConverter/scrape.php";
+
+        // creating a new variable for our request queue
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+
+        // on below line we are calling a string
+        // request method to post the data to our API
+        // in this we are calling a post method.
+        StringRequest request = new StringRequest(Request.Method.POST, url, new com.android.volley.Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                // inside on response method we are
+                // hiding our progress bar
+                // and setting data to edit text as empty
+                loadingPB.setVisibility(View.GONE);
+                nameEdt.setText("");
+                jobEdt.setText("");
+
+                // on below line we are displaying a success toast message.
+                Toast.makeText(MainActivity.this, "Data added to API", Toast.LENGTH_SHORT).show();
+                try {
+                    // on below line we are passing our response
+                    // to json object to extract data from it.
+                    JSONObject respObj = new JSONObject(response);
+
+                    // below are the strings which we
+                    // extract from our json object.
+                    String name = respObj.getString("name");
+                    String job = respObj.getString("job");
+
+                    // on below line we are setting this string s to our text view.
+                    responseTV.setText("Name : " + name + "\n" + "Job : " + job);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new com.android.volley.Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // method to handle errors.
+                Toast.makeText(MainActivity.this, "Fail to get response = " + error, Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                // below line we are creating a map for
+                // storing our values in key and value pair.
+                Map<String, String> params = new HashMap<String, String>();
+
+                // on below line we are passing our key
+                // and value pair to our parameters.
+                params.put("name", name);
+                params.put("job", job);
+
+                // at last we are
+                // returning our params.
+                return params;
+            }
+        };
+        // below line is to make
+        // a json object request.
+        queue.add(request);
+    }
+}
 
 
 }
