@@ -25,6 +25,13 @@ $response = $row;
 $json_response = json_encode($response);
 echo $json_response;
 
+$amount=$_GET["amount"];
+$currency_type=$_GET["currency_type"];
+echo "amount that the user put is :"
+echo $amount;
+echo "the type is: "
+echo $currency_type=;
+
 curl_close($scrape);
 
 ?>
