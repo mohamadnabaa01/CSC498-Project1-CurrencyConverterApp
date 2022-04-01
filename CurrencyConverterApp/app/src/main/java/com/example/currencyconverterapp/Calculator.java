@@ -65,6 +65,11 @@ public class Calculator extends AppCompatActivity {
             other_currency_statement.setText("المبلغ بالليرة اللبنانية هو:");
         if (currency_convert.equalsIgnoreCase("L.L."))
             other_currency_statement.setText("المبلغ بالدولار هو:");
+
+        //intent sending the amount to the main activity
+        Intent intent_amount = new Intent(getApplicationContext(), MainActivity.class);
+        intent_amount.putExtra("amount_to_convert",amount_to_convert);
+        intent_amount.putExtra("currency_type",currency_convert);//sending whether it is usd or lbp
     }
 
     public void Reset(View view) {
