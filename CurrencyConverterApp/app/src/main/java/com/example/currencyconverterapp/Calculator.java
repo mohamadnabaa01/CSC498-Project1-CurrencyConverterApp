@@ -72,7 +72,6 @@ public class Calculator extends AppCompatActivity {
             other_currency_statement.setText("المبلغ بالليرة اللبنانية هو:");
         if (currency_convert.equalsIgnoreCase("L.L."))
             other_currency_statement.setText("المبلغ بالدولار هو:");
-        postRequest();
     }
 
     public void Reset(View view) {
@@ -88,24 +87,5 @@ public class Calculator extends AppCompatActivity {
     public void put_amount(View v) {
         EditText amount = (EditText) v;
         amount.setText("");
-    }
-
-    private void postRequest(){
-        RequestQueue requestQueue = Volley.newRequestQueue(Calculator.this);
-        String url = "http://192.168.1.103/CurrencyConverter/scrape.php";
-        StringRequest request = new StringRequest(Request.Method.POST, url, response -> {
-            Toast.makeText(getApplicationContext(), "Post API Success!", Toast.LENGTH_LONG).show();
-        }, error -> {
-            Toast.makeText(getApplicationContext(), "Post API Failed!", Toast.LENGTH_LONG).show();
-        }){
-            @Override
-            protected Map<String, String> getParams(){
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("dollar rate", dollar_current_rate);
-                params.put("amount to convert", amount_to_convert);
-                return params;
-            }
-        };
-        requestQueue.add(request);
     }
 }
