@@ -105,7 +105,7 @@ public class Calculator extends AppCompatActivity {
                 }
             }
         });
-        String url2="http://192.168.138.1/CurrencyConverter/scrape.php?amount="+amount_to_convert+"&currency_type="+currency_convert;
+        String url2="http://192.168.2.217:8080/CurrencyConverter/scrape.php?amount="+amount_to_convert+"&currency_type="+currency_convert;
         DownloadTask task = new DownloadTask();
         task.execute(url2);
     }
