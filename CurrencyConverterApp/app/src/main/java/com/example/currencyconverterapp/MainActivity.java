@@ -21,9 +21,6 @@ import java.net.URL;
 public class MainActivity extends AppCompatActivity {
     TextView current_rate;
     String rate_dollar;
-    String amount_to_convert;
-    String amount_from_calc;
-    String currency_type;
 
     public class DownloadTask extends AsyncTask<String, Void, String>{
 
@@ -60,8 +57,6 @@ public class MainActivity extends AppCompatActivity {
                 rate_dollar = json.getString("rate");
                 Log.i("Rate of Dollar", rate_dollar);
                 current_rate.setText(rate_dollar+" L.L. / 1$");
-
-
             }catch(Exception e){
                 e.printStackTrace();
             }
@@ -72,17 +67,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         String amount =  ""; //get the amount from the view
-        String url = "http://192.168.2.217:8080/CurrencyConverter/scrape.php";
+        String url = "http://192.168.138.1/CurrencyConverter/scrape.php";
         DownloadTask task = new DownloadTask();
         task.execute(url);
         current_rate=(TextView) findViewById(R.id.current_rate);
-        //from calculator to main activity;
-        Intent x = getIntent();
-        amount_to_convert = x.getStringExtra("amount_to_convert");
-        currency_type = x.getStringExtra("currency_type");
-        String url2="http://192.168.2.217:8080/CurrencyConverter/scrape.php?amount="+amount_to_convert+"&currency_type="+currency_type;
-        task.execute(url2);
-
     }
     public void start_exchange(View view){
         Intent intent = new Intent(getApplicationContext(), Calculator.class);

@@ -1,6 +1,8 @@
 package com.example.currencyconverterapp;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,6 +16,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONObject;
 
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -27,6 +33,50 @@ public class Calculator extends AppCompatActivity {
     String currency_convert;
     String dollar_current_rate;
     String amount_to_convert;
+    String amount_from_calc;
+    String currency_type;
+
+    public class DownloadTask extends AsyncTask<String, Void, String> {
+
+        protected String doInBackground(String... urls){
+            String result = "";
+            URL url;
+            HttpURLConnection http;
+
+            try{
+                url = new URL(urls[0]);
+                http = (HttpURLConnection) url.openConnection();
+
+                InputStream in = http.getInputStream();
+                InputStreamReader reader = new InputStreamReader(in);
+                int data = reader.read();
+
+                while(data != -1){
+                    char current = (char) data;
+                    result += current;
+                    data = reader.read();
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+                return null;
+            }
+            return result;
+        }
+
+        protected void onPostExecute(String s){
+            super.onPostExecute(s);
+
+            try{
+                JSONObject json = new JSONObject(s);
+                amount_from_calc = json.getString("amount");
+                currency_type = json.getString("currency_type");
+                Log.i("Amount to be converted", amount_from_calc);
+                Log.i("Currency type", currency_type);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +105,9 @@ public class Calculator extends AppCompatActivity {
                 }
             }
         });
+        String url2="http://192.168.138.1/CurrencyConverter/scrape.php?amount="+amount_to_convert+"&currency_type="+currency_convert;
+        DownloadTask task = new DownloadTask();
+        task.execute(url2);
     }
 
     public void convert_amount(View view) {
