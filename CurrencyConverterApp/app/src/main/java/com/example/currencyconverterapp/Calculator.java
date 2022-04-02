@@ -116,8 +116,8 @@ public class Calculator extends AppCompatActivity {
             other_currency_statement.setText("المبلغ بالليرة اللبنانية هو:");
         if (currency_convert.equalsIgnoreCase("L.L."))
             other_currency_statement.setText("المبلغ بالدولار هو:");
-        String url2="http://192.168.2.217:8080/CurrencyConverter/calculator.php?amount="+amount_to_convert+"&currency_type="+currency_convert;
-        DownloadTask task = new DownloadTask();
+        String url2="http://192.168.2.217:8080/CurrencyConverter/calculator.php?amount="+200+"&currency_type="+"USD"+"$current_rate="+25000;
+        DownloadTask task = new DownloadTask();//dollar_current_rate
         task.execute(url2);
     }
 
