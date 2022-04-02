@@ -35,6 +35,8 @@ public class Calculator extends AppCompatActivity {
     String amount_to_convert;
     String amount_from_calc;
     String currency_type;
+    String amount_result;
+    TextView converted_amount;
 
     public class DownloadTask extends AsyncTask<String, Void, String> {
 
@@ -68,10 +70,9 @@ public class Calculator extends AppCompatActivity {
 
             try{
                 JSONObject json = new JSONObject(s);
-                amount_from_calc = json.getString("amount_convert");
-                currency_type = json.getString("currency_type");
-                Log.i("Amount to be converted", amount_from_calc);
-                Log.i("Currency type", currency_type);
+                amount_result = json.getString("result");
+                Log.i("Result",amount_result);
+                converted_amount.setText(amount_result);
             }catch(Exception e){
                 e.printStackTrace();
             }
@@ -86,6 +87,7 @@ public class Calculator extends AppCompatActivity {
         dollar_current_rate = y.getStringExtra("dollar_rate");
         TextView dollar_text = (TextView) findViewById(R.id.current_rate_text);
         dollar_text.setText(dollar_current_rate + " L.L.");
+        converted_amount = (TextView) findViewById(R.id.converted_amount);
 
         currency_list = (ListView) findViewById(R.id.currency_list);
         the_currency_list = new ArrayList<String>(Arrays.asList("الليرة اللبنانية", "دولار امريكي"));
@@ -117,8 +119,9 @@ public class Calculator extends AppCompatActivity {
         if (currency_convert.equalsIgnoreCase("L.L."))
             other_currency_statement.setText("المبلغ بالدولار هو:");
         String url2="http://172.20.10.7:8080/CurrencyConverter/calculator.php?amount="+amount_to_convert+"&currency_type="+currency_convert+"&current_rate="+dollar_current_rate;
-        DownloadTask task = new DownloadTask();//dollar_current_rate
+        DownloadTask task = new DownloadTask();
         task.execute(url2);
+
     }
 
     public void Reset(View view) {
@@ -126,7 +129,6 @@ public class Calculator extends AppCompatActivity {
         amount_convert.setText("اي مبلغ متاح فقط");
         TextView other_currency_statement = (TextView) findViewById(R.id.other_currency_stmt);
         other_currency_statement.setText("");
-        TextView converted_amount = (TextView) findViewById(R.id.converted_amount);
         converted_amount.setText("");
         Toast.makeText(getApplicationContext(), "لقد تم تكرار الصفحة كاملة", Toast.LENGTH_LONG).show();
     }
