@@ -103,7 +103,7 @@
         android:id="@+id/converted_amount"
         android:layout_width="319dp"
         android:layout_height="36dp"
-        android:textAlignment="textStart"
+        android:textAlignment="center"
         android:textColor="#BF000000"
         android:textSize="25dp"
         android:textStyle="bold"

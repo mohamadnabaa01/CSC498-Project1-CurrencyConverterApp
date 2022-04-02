@@ -122,6 +122,7 @@ public class Calculator extends AppCompatActivity {
         DownloadTask task = new DownloadTask();
         task.execute(url2);
 
+        //Toast.makeText(getApplicationContext(),amount_result,Toast.LENGTH_LONG).show();
     }
 
     public void Reset(View view) {
