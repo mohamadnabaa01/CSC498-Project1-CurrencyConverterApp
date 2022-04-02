@@ -68,7 +68,7 @@ public class Calculator extends AppCompatActivity {
 
             try{
                 JSONObject json = new JSONObject(s);
-                amount_from_calc = json.getString("amount");
+                amount_from_calc = json.getString("amount_convert");
                 currency_type = json.getString("currency_type");
                 Log.i("Amount to be converted", amount_from_calc);
                 Log.i("Currency type", currency_type);
@@ -116,7 +116,7 @@ public class Calculator extends AppCompatActivity {
             other_currency_statement.setText("المبلغ بالليرة اللبنانية هو:");
         if (currency_convert.equalsIgnoreCase("L.L."))
             other_currency_statement.setText("المبلغ بالدولار هو:");
-        String url2="http://192.168.2.217:8080/CurrencyConverter/scrape.php?amount="+100+"&currency_type="+"usd";
+        String url2="http://192.168.138.1/CurrencyConverter/calculator.php?amount="+amount_to_convert+"&currency_type="+currency_convert;
         DownloadTask task = new DownloadTask();
         task.execute(url2);
     }
